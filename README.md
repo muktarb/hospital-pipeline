@@ -228,7 +228,39 @@ Although not implemented in this exercise, the gold zone would typically contain
 The gold zone serves analysts and decision-makers directly; the bronze and silver zones serve engineers and data scientists who need raw or lightly-transformed data.
 
 ---
+## Pipeline Output — Example Run
 
+The following results were produced by running the pipeline against live
+OpenStreetMap data on 8 June 2026.
+
+### Bronze zone
+- **Source:** OpenStreetMap via Overpass API
+- **Query scope:** United Kingdom (`ISO3166-1 = GB`)
+- **Elements retrieved:** nodes, ways, and relations tagged `amenity=hospital`
+
+### Silver zone
+
+| Metric | Value |
+|---|---|
+| Total records | 1,826 |
+| Clean records (no flags) | 1,746 (95.6%) |
+| Flagged — MISSING_NAME | 80 (4.4%) |
+| Flagged — OUT_OF_BOUNDS | 0 |
+| Geometry type | Point (all records) |
+| CRS | EPSG:4326 (WGS84) |
+| Coordinate bounds (lon) | −5.8084 to 1.7318 |
+| Coordinate bounds (lat) | 50.0691 to 59.9743 |
+
+### Quality flag notes
+
+- **MISSING_NAME (80 records):** Smaller clinics and community hospitals
+  in OSM are frequently mapped as polygon features without a name tag.
+  These records are retained in the silver layer with the flag set —
+  they carry valid geometry and may be useful for spatial analysis even
+  without a name.
+- **OUT_OF_BOUNDS (0 records):** The Overpass API query correctly scoped
+  all results within the UK bounding box. No erroneous coordinates were
+  detected.
 ## Repository Structure
 
 ```
